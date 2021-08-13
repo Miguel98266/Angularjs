@@ -37,19 +37,6 @@ angular
     .error(function(err){
 
     });
-    $http({
-      method: "Post",
-      url: "https://jsonplaceholder.typicode.com/posts",
-      title:$scope.newPost.title,
-      body:$scope.newPost.body,
-      userId:1
-    }).then(function(response,status,headers,config){
-      $scope.posts.push($scope,newPost);
-      $scope.addPost={};
-    })
-    , (function(error, status, headers, config) {
-      console.log(error);
-    });
     
     */
   });
