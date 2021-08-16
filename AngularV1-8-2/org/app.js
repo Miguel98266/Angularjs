@@ -5,7 +5,6 @@ angular
       {
         name: "Ian Devling",
         area: "Corporate",
-        office: "CTO office",
         positionName: "Chief Executive Officer",
         id: "O-6066",
         parentId: "",
@@ -13,13 +12,12 @@ angular
       {
         name: "Davolio Nancy",
         area: "Corporate",
-        office: "CEO office",
         positionName: "CTO",
         id: "O-6067",
         parentId: "O-6066",
       },
     ];
-    chart = new d3.OrgChart()
+    $scope.chart = new d3.OrgChart()
       .container(".chart-container")
       .data($scope.data)
       .nodeWidth((d) => 250)
