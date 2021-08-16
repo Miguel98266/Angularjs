@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html ng-app="MyFirsApp">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ng-src</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3-org-chart@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3-flextree@2.0.0/build/d3-flextree.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script src="app.js"></script>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+</head>
+
+<body ng-controller="mainCtrl">
+  <button class=" btn-action btn-search" onclick="params.funcs.search()"> Search <span class='icon'/> <i class="fa fa-search" aria-hidden="true"></i></span></button>
+  <button class=" btn-action btn-back" onclick="params.funcs.back()"> Back <span class='icon'/> <i class="fa fa-arrow-left" aria-hidden="true"></i></span></button>
+  <div class="chart-container" style="height: 1200px; background-color: #f6f6f6">
+  </div>
+  <div class="user-search-box">
+    <div class="input-box">
+      <div class="close-button-wrapper"><i onclick="closeSearchBox()" class="fa fa-times"
+          aria-hidden="true"></i></div>
+      <div class="input-wrapper">
+        <input type="text" class="search-input" placeholder="Search" />
+        <div class="input-bottom-placeholder">By Firstname, Lastname, Tags</div>
+      </div>
+      <div>
+      </div>
+    </div>
+    <div class="result-box">
+      <div class="result-header"> RESULTS </div>
+      <div class="result-list">
+
+        <div class="buffer"></div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

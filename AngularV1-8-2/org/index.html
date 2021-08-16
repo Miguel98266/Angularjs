@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="orgchart.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <title>Document</title>
+    <style>
+      #chart-container {
+        font-family: Arial;
+        height: 420px;
+        border: 2px dashed rgb(255, 255, 255);
+        border-radius: 5px;
+        overflow: auto;
+        text-align: center;
+      }
+      .orgchart {
+        background: #fff;
+      }
+      .orgchart .node.matched {
+        background-color: rgba(51, 74, 204, 0.3);
+      }
+      
+      #edit-panel {
+        text-align: center;
+        position: relative;
+        left: 10px;
+        width: calc(100% - 40px);
+        border-radius: 4px;
+        float: left;
+        margin-top: 10px;
+        padding: 10px;
+        color: #fff;
+        background-color: #144a80;
+      }
+      #edit-panel * {
+        font-size: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="chart-container"></div>
+    <div id="edit-panel" class="view-state">
+      <input type="text" id="key-word" />
+      <button type="button" id="btn-filter-node">Filtrar</button>
+      <button type="button" id="btn-cancel">Cancelar</button>
+    </div>
+  </body>
+</html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/orgchart/2.1.3/js/jquery.orgchart.min.js"></script>
+<script>
+  function filterNodes(keyWord) {
+    if (!keyWord.length) {
+      window.alert("Por favor escribe algo primero");
+      return;
+    } else {
+      var $chart = $(".orgchart");
+      // disalbe the expand/collapse feture
+      $chart.addClass("noncollapsable");
+      // distinguish the matched nodes and the unmatched nodes according to the given key word
+      $chart
+        .find(".node")
+        .filter(function (index, node) {
+          return $(node).text().toLowerCase().indexOf(keyWord) > -1;
+        })
+        .addClass("matched")
+        .closest("table")
+        .parents("table")
+        .find("tr:first")
+        .find(".node")
+        .addClass("retained");
+      // hide the unmatched nodes
+      $chart.find(".matched,.retained").each(function (index, node) {
+        $(node)
+          .removeClass("slide-up")
+          .closest(".nodes")
+          .removeClass("hidden")
+          .siblings(".lines")
+          .removeClass("hidden");
+        var $unmatched = $(node)
+          .closest("table")
+          .parent()
+          .siblings()
+          .find(".node:first:not(.matched,.retained)")
+          .closest("table")
+          .parent()
+          .addClass("hidden");
+        $unmatched
+          .parent()
+          .prev()
+          .children()
+          .slice(1, $unmatched.length * 2 + 1)
+          .addClass("hidden");
+      });
+    }
+  }
+
+  function clearFilterResult() {
+    $(".orgchart")
+      .removeClass("noncollapsable")
+      .find(".node")
+      .removeClass("matched retained")
+      .end()
+      .find(".hidden")
+      .removeClass("hidden")
+      .end()
+      .find(".slide-up, .slide-left, .slide-right")
+      .removeClass("slide-up slide-right slide-left");
+  }
+
+  (function ($) {
+    $(function () {
+      var ds = {
+        Id: "1",
+        name: "Miguel",
+        Parent: "",
+        Title: "CEO",
+        children: [
+          {
+            Id: "2",
+            name: "Angel",
+            Parent: "1",
+            Title: "IT",
+            children: [
+              { Id: "5", name: "Rosa", Parent: "2", Title: "FP", children: [] },
+              {
+                Id: "6",
+                name: "Maria",
+                Parent: "2",
+                Title: "Contador",
+                children: [],
+              },
+              {
+                Id: "7",
+                name: "Calixto",
+                Parent: "2",
+                Title: "Developer",
+                children: [],
+              },
+            ],
+          },
+          {
+            Id: "3",
+            name: "Chavez",
+            Parent: "1",
+            Title: "SALES",
+            children: [
+              {
+                Id: "18",
+                name: "Serrano",
+                Parent: "3",
+                Title: "Extra",
+                children: [],
+              },
+            ],
+          },
+          { Id: "4", name: "Reyes", Parent: "1", Title: "RH", children: [] },
+        ],
+      };
+
+      var oc = $("#chart-container").orgchart({
+        data: ds,
+        nodeContent: "Title",
+        toggleSiblingsResp: true,
+      });
+      $("#btn-filter-node").on("click", function () {
+        filterNodes($("#key-word").val().toLowerCase());
+      });
+
+      $("#btn-cancel").on("click", function () {
+        clearFilterResult();
+      });
+
+      $("#key-word").on("keyup", function (event) {
+        if (event.which === 13) {
+          filterNodes(this.value);
+        } else if (event.which === 8 && this.value.length === 0) {
+          clearFilterResult();
+        }
+      });
+    });
+  })(jQuery);
+</script>
