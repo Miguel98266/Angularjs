@@ -567,6 +567,11 @@
         }
     </style>
 
+
+
+
+
+
 </head>
 
 <body translate="no">
@@ -574,8 +579,7 @@
     <div id="full-container">
         <button class="btn-action btn-fullscreen" onclick="params.funcs.toggleFullScreen()">Fullscreen <span
                 class='icon' /> <i class="fa fa-arrows-alt" aria-hidden="true"></i></span></button>
-        <button class="btn-action btn-show-my-self" onclick="params.funcs.showMySelf()"> Show myself <span
-                class='icon' /> <i class="fa fa-user" aria-hidden="true"></i></span></button>
+
 
         <button class=" btn-action btn-search" onclick="params.funcs.search()"> Search <span class='icon' /> <i
                 class="fa fa-search" aria-hidden="true"></i></span></button>
@@ -632,15 +636,12 @@
             chartWidth: window.innerWidth - 40,
             chartHeight: window.innerHeight - 40,
             funcs: {
-                showMySelf: null,
                 search: null,
                 closeSearchBox: null,
                 clearResult: null,
                 findInTree: null,
                 reflectResults: null,
-                departmentClick: null,
                 back: null,
-                toggleFullScreen: null,
                 locate: null
             },
             data: null
@@ -656,16 +657,13 @@
         function drawOrganizationChart(params) {
             listen();
 
-            params.funcs.showMySelf = showMySelf;
-            params.funcs.expandAll = expandAll;
+            
             params.funcs.search = searchUsers;
             params.funcs.closeSearchBox = closeSearchBox;
             params.funcs.findInTree = findInTree;
             params.funcs.clearResult = clearResult;
-            params.funcs.reflectResults = reflectResults;
-            params.funcs.departmentClick = departmentClick;
+            params.funcs.reflectResults = reflectResults;      
             params.funcs.back = back;
-            params.funcs.toggleFullScreen = toggleFullScreen;
             params.funcs.locate = locate;
 
             var attrs = {
@@ -1450,39 +1448,6 @@
             }
 
             /* recursively find logged user in subtree */
-            function findmySelf(d) {
-                if (d.isLoggedUser) {
-                    expandParents(d);
-                } else if (d._children) {
-                    d._children.forEach(function (ch) {
-                        ch.parent = d;
-                        findmySelf(ch);
-                    })
-                } else if (d.children) {
-                    d.children.forEach(function (ch) {
-                        ch.parent = d;
-                        findmySelf(ch);
-                    });
-                };
-
-            }
-
-            function locateRecursive(d, id) {
-                if (d.uniqueIdentifier == id) {
-                    expandParents(d);
-                } else if (d._children) {
-                    d._children.forEach(function (ch) {
-                        ch.parent = d;
-                        locateRecursive(ch, id);
-                    })
-                } else if (d.children) {
-                    d.children.forEach(function (ch) {
-                        ch.parent = d;
-                        locateRecursive(ch, id);
-                    });
-                };
-
-            }
 
             /* expand current nodes collapsed parents */
             function expandParents(d) {
@@ -1524,20 +1489,6 @@
 
 
 
-            function showMySelf() {
-                /* collapse all and expand logged user nodes */
-                if (!attrs.root.children) {
-                    if (!attrs.root.isLoggedUser) {
-                        attrs.root.children = attrs.root._children;
-                    }
-                }
-                if (attrs.root.children) {
-                    attrs.root.children.forEach(collapse);
-                    attrs.root.children.forEach(findmySelf);
-                }
-
-                update(attrs.root, { centerMySelf: true });
-            }
 
             //locateRecursive
             function locate(id) {

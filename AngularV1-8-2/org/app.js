@@ -60,4 +60,89 @@ angular
 `;
       })
       .render();
+       function reflectResults(results) {
+                var htmlStringArray = results.map(function (result) {
+                    var strVar = "";
+                    strVar += "         <div class=\"list-item\">";
+                    strVar += "          <a >";
+                    strVar += "            <div class=\"image-wrapper\">";
+                    strVar += "              <img class=\"image\" src=\"" + result.imageUrl + "\"\/>";
+                    strVar += "            <\/div>";
+                    strVar += "            <div class=\"description\">";
+                    strVar += "              <p class=\"name\">" + result.name + "<\/p>";
+                    strVar += "               <p class=\"position-name\">" + result.positionName + "<\/p>";
+                    strVar += "               <p class=\"area\">" + result.area + "<\/p>";
+                    strVar += "            <\/div>";
+                    strVar += "            <div class=\"buttons\">";
+                    strVar += "              <a target='_blank' href='" + result.profileUrl + "'><button class='btn-search-box btn-action'>View Profile<\/button><\/a>";
+                    strVar += "              <button class='btn-search-box btn-action btn-locate' onclick='params.funcs.locate(" + result.uniqueIdentifier + ")'>Locate <\/button>";
+                    strVar += "            <\/div>";
+                    strVar += "          <\/a>";
+                    strVar += "        <\/div>";
+
+                    return strVar;
+
+                })
+
+                var htmlString = htmlStringArray.join('');
+                params.funcs.clearResult();
+
+                var parentElement = get('.result-list');
+                var old = parentElement.innerHTML;
+                var newElement = htmlString + old;
+                parentElement.innerHTML = newElement;
+                set('.user-search-box .result-header', "RESULT - " + htmlStringArray.length);
+
+            }
+
+            function clearResult() {
+                set('.result-list', '<div class="buffer" ></div>');
+                set('.user-search-box .result-header', "RESULT");
+
+            }
+
+            function listen() {
+                var input = get('.user-search-box .search-input');
+
+                input.addEventListener('input', function () {
+                    var value = input.value ? input.value.trim() : '';
+                    if (value.length < 3) {
+                        params.funcs.clearResult();
+                    } else {
+                        var searchResult = params.funcs.findInTree(params.data, value);
+                        params.funcs.reflectResults(searchResult);
+                    }
+
+                });
+            }
+
+            $scope.search = function searchUsers() {
+
+                d3.selectAll('.user-search-box')
+                    .transition()
+                    .duration(250)
+                    .style('width', '350px')
+            }
+            
+
+            function closeSearchBox() {
+                d3.selectAll('.user-search-box')
+                    .transition()
+                    .duration(250)
+                    .style('width', '0px')
+                    .each("end", function () {
+                        params.funcs.clearResult();
+                        clear('.search-input');
+                    });
+
+            }
+
+            function findInTree(rootElement, searchText) {
+                var result = [];
+                // use regex to achieve case insensitive search and avoid string creation using toLowerCase method
+                var regexSearchWord = new RegExp(searchText, "i");
+
+                recursivelyFindIn(rootElement, searchText);
+
+                return result;}
   });

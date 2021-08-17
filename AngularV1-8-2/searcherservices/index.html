@@ -9,23 +9,21 @@
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/d3-org-chart@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/d3-flextree@2.0.0/build/d3-flextree.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/ang  ularjs/1.8.2/angular.min.js"></script>
-  <script src="app.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script src="controller.js"></script>
   <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 </head>
 
 <body ng-controller="mainCtrl">
-  <button ng-click='chart.setExpanded("O-6067").render()' class="btn btn-action-button waves-effect waves-light"><i
-    class="fas fa-chevron-down"></i> Expand </button>
-<br>
-<button ng-click='chart.setExpanded("O-6067",false).render()'
-class="btn btn-action-button waves-effect waves-light"><i class="fas fa-chevron-up"></i>
-Collapse</button><br>
 
-  <div class="chart-container" style="height: 1200px; background-color: #f6f6f6">
-  </div>
+  <br>
   
+  
+  <div class="chart-container" style="height: 1200px; background-color: #f6f6f6">
+    <button ng-click="chart.fit()" class="btn btn-action-button waves-effect waves-light"><i class="fas fa-sync"></i>
+      Ajustar</button><br>
+  </div>
   
 </body>
 
