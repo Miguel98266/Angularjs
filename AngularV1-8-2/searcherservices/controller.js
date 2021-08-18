@@ -1,6 +1,6 @@
 angular
   .module("MyFirsApp", [])
-  .controller("mainCtrl", function ($scope, ToDoService) {
+  .controller("mainCtrl", function ($scope) {
     $scope.data = [
       {
         name: "Ian Devling",
